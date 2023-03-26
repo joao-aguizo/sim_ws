@@ -6,32 +6,42 @@ From: osrf/ros:noetic-desktop-full-focal
 # time, for define them as well in the '%post' section.
 %environment
     export LC_ALL=C
-    export SIF_NAME='simulation'
+    export SIF_NAME='husky'
 
 # Tool downloading and installations, write configurations, create directories, etc.
 # NOTE: Should be used to setup BUILD time environment variables.
 %post
     apt-get update
     
+    # gazebo
     apt-get install -y \
         ros-$ROS_DISTRO-gazebo-ros-pkgs \
-        ros-$ROS_DISTRO-gazebo-ros-control \
-        ros-$ROS_DISTRO-husky-desktop \
-        ros-$ROS_DISTRO-husky-simulator \
-        ros-$ROS_DISTRO-teleop-twist-keyboard \
-        dbus
+        ros-$ROS_DISTRO-gazebo-ros-control
 
-    # install SDL lib (https://github.com/ros-planning/navigation/issues/579)
+    # husky
     apt-get install -y \
-        libsdl-image1.2-dev \
-        libsdl-dev
+        ros-$ROS_DISTRO-husky-desktop \
+        ros-$ROS_DISTRO-husky-simulator
 
+    # localization
+    apt-get install -y \
+        ros-$ROS_DISTRO-robot-localization \
+        ros-$ROS_DISTRO-robot-state-publisher
+
+    # localization (LIO-SAM dependencies)
     # install GTSAM lib (https://github.com/TixiaoShan/LIO-SAM#dependency)
     apt-get install -y software-properties-common
     add-apt-repository ppa:borglab/gtsam-release-4.0
     apt install -y \
         libgtsam-dev \
         libgtsam-unstable-dev
+
+    # navigation
+    apt-get install -y \
+        ros-$ROS_DISTRO-navigation \
+        ros-$ROS_DISTRO-move-base-flex \
+        ros-$ROS_DISTRO-teleop-twist-keyboard \
+        dbus
     
     # other useful tools
     apt-get install -y \
