@@ -1,0 +1,136 @@
+Bootstrap: docker
+From: osrf/ros:noetic-desktop-full-focal
+
+# =======================
+# global
+# =======================
+%environment
+    export LC_ALL=C
+
+%post
+    apt-get update
+    
+    # gazebo
+    apt-get install -y \
+        ros-$ROS_DISTRO-gazebo-ros-pkgs \
+        ros-$ROS_DISTRO-gazebo-ros-control
+
+    # localization
+    apt-get install -y \
+        ros-$ROS_DISTRO-robot-localization \
+        ros-$ROS_DISTRO-robot-state-publisher
+
+    # localization (LIO-SAM dependencies)
+    # install GTSAM lib (https://github.com/TixiaoShan/LIO-SAM#dependency)
+    apt-get install -y software-properties-common
+    add-apt-repository ppa:borglab/gtsam-release-4.0
+    apt install -y \
+        libgtsam-dev \
+        libgtsam-unstable-dev
+
+    # navigation
+    apt-get install -y \
+        ros-$ROS_DISTRO-navigation \
+        ros-$ROS_DISTRO-move-base-flex \
+        ros-$ROS_DISTRO-teleop-twist-keyboard \
+        dbus
+    
+    # other useful tools
+    apt-get install -y \
+        moreutils \
+        python3-catkin-tools \
+        python3-psutil \
+        vim \
+        nano \
+        zsh \
+        ranger \
+        tmux \
+        git
+
+    # link configuration file for the simulation environment
+    ln -s /opt/host/99-sim_env.sh /.singularity.d/env/99-sim_env.sh
+
+%runscript
+    CMD="${@}"
+    
+    if [ -z "${CMD}" ]; then
+        /bin/bash --login
+    else
+        /bin/bash --login -c "${CMD}"
+    fi
+
+    exit 0
+
+%labels
+    Author joaoaguizo@gmail.com
+    Version v0.0.1
+
+%help
+    Singularity image built from ROS Noetic with Gazebo 11, Husky packages and gazebo_ros_pkgs.
+
+# =======================
+# husky
+# =======================
+%appenv husky
+    export SIF_NAME='husky'
+
+%appinstall husky
+    apt-get install -y \
+        ros-$ROS_DISTRO-husky-desktop \
+        ros-$ROS_DISTRO-husky-simulator
+
+# =======================
+# jackal
+# =======================
+%appenv jackal
+    export SIF_NAME='jackal'
+
+%appinstall jackal
+    apt-get install -y \
+        ros-$ROS_DISTRO-jackal-desktop \
+        ros-$ROS_DISTRO-jackal-simulator
+
+# =======================
+# warthog
+# =======================
+%appenv warthog
+    export SIF_NAME='warthog'
+
+%appinstall warthog
+    apt-get install -y \
+        ros-$ROS_DISTRO-warthog-desktop \
+        ros-$ROS_DISTRO-warthog-simulator
+
+# =======================
+# dingo
+# =======================
+%appenv dingo
+    export SIF_NAME='dingo'
+
+%appinstall dingo
+    apt-get install -y \
+        ros-$ROS_DISTRO-dingo-desktop \
+        ros-$ROS_DISTRO-dingo-simulator
+
+# =======================
+# boxer
+# =======================
+%appenv boxer
+    export SIF_NAME='boxer'
+
+%appinstall boxer
+    apt-get install -y \
+        ros-$ROS_DISTRO-boxer-desktop \
+        ros-$ROS_DISTRO-boxer-simulator
+
+# =======================
+# ridgeback
+# =======================
+%appenv ridgeback
+    export SIF_NAME='ridgeback'
+
+%appinstall ridgeback
+    apt-get install -y \
+        ros-$ROS_DISTRO-ridgeback-desktop \
+        ros-$ROS_DISTRO-ridgeback-simulator
+

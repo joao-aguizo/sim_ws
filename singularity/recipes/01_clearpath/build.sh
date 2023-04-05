@@ -8,5 +8,5 @@ singularity build \
     --fakeroot \
     --fix-perms \
     -F \
-    $REPO_PATH/images/husky.sif \
+    $REPO_PATH/images/clearpath.sif \
     $THIS_PATH/recipe.def
