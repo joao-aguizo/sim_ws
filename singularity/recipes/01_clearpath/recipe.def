@@ -87,7 +87,6 @@ From: osrf/ros:noetic-desktop-full-focal
 
 %appinstall jackal
     apt-get install -y \
-        ros-$ROS_DISTRO-jackal-desktop \
         ros-$ROS_DISTRO-jackal-simulator
 
 # =======================
@@ -112,16 +111,16 @@ From: osrf/ros:noetic-desktop-full-focal
         ros-$ROS_DISTRO-dingo-desktop \
         ros-$ROS_DISTRO-dingo-simulator
 
-# =======================
-# boxer
-# =======================
-%appenv boxer
-    export SIF_NAME='boxer'
+# # =======================
+# # boxer
+# # =======================
+# %appenv boxer
+#     export SIF_NAME='boxer'
 
-%appinstall boxer
-    apt-get install -y \
-        ros-$ROS_DISTRO-boxer-desktop \
-        ros-$ROS_DISTRO-boxer-simulator
+# %appinstall boxer
+#     apt-get install -y \
+#         ros-$ROS_DISTRO-boxer-desktop \
+#         ros-$ROS_DISTRO-boxer-simulator
 
 # =======================
 # ridgeback
