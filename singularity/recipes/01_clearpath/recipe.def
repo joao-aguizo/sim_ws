@@ -6,6 +6,7 @@ From: osrf/ros:noetic-desktop-full-focal
 # =======================
 %environment
     export LC_ALL=C
+    export SIF_NAME='ClearPath'
 
 %post
     apt-get update

@@ -26,9 +26,12 @@ MOUNT_PATH="$SINGULARITY_PATH/mount"
 # can run custom .sif <file>
 # use <file>.sif for normal container
 # use <folder>/ for sandbox container
-FILE_NAME=${1:-'clearpath'}
+FILE_NAME='clearpath'
 CONTAINER_NAME="$FILE_NAME.sif"
 OVERLAY_NAME="$FILE_NAME.img"
+
+APP=false # true: will specify app from container
+APP_NAME='husky' # the app to launch
 
 CONTAINED=true  # true: will isolate from the HOST's home
 CLEAN_ENV=true # true: will clean the shell environment before runnning container
@@ -66,13 +69,19 @@ if [ -n "$TMUX" ]; then
   exit 1
 fi
 
-if [ -z "$2" ]; then
+if [ -z "$1" ]; then
   ACTION="run"
 else
-  ACTION=${2}
+  ACTION=${1}
 fi
 
 CONTAINER_PATH=$IMAGES_PATH/$CONTAINER_NAME
+
+if $APP; then
+  APP_ARG="--app $APP_NAME"
+else
+  APP_ARG=''
+fi
 
 if $OVERLAY; then
 
@@ -190,6 +199,7 @@ fi
 export SINGULARITYENV_DISPLAY=$DISPLAY
 
 $EXEC_CMD singularity $ACTION \
+  $APP_ARG \
   $NVIDIA_ARG \
   $OVERLAY_ARG \
   $CONTAINED_ARG \
